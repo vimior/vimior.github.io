@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#fff">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: true,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;#160; &amp;#160; &amp;#160; &amp;#160;本文将使用Hexo+Github一步步搭建属于自己的博客，效果如下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Hexo+Github一步步搭建属于自己的博客">
+<meta property="og:url" content="https://vimior.github.io/Hexo/使用Hexo+Github一步步搭建属于自己的博客/index.html">
+<meta property="og:site_name" content="每天进步一点点">
+<meta property="og:description" content="&amp;#160; &amp;#160; &amp;#160; &amp;#160;本文将使用Hexo+Github一步步搭建属于自己的博客，效果如下">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://vimior.github.io/images/site_preview.png">
+<meta property="og:image" content="https://vimior.github.io/images/create_github_repo_1.png">
+<meta property="og:image" content="https://vimior.github.io/images/create_github_repo_2.png">
+<meta property="og:image" content="https://vimior.github.io/images/github_pages.png">
+<meta property="og:image" content="https://vimior.github.io/images/hexo_init.png">
+<meta property="og:image" content="https://vimior.github.io/images/add_ssh_key_1.png">
+<meta property="og:image" content="https://vimior.github.io/images/add_ssh_key_2.png">
+<meta property="og:image" content="https://vimior.github.io/images/add_ssh_key_3.png">
+<meta property="og:updated_time" content="2019-06-01T17:12:12.592Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Hexo+Github一步步搭建属于自己的博客">
+<meta name="twitter:description" content="&amp;#160; &amp;#160; &amp;#160; &amp;#160;本文将使用Hexo+Github一步步搭建属于自己的博客，效果如下">
+<meta name="twitter:image" content="https://vimior.github.io/images/site_preview.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="每天进步一点点" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://vimior.github.io/Hexo/使用Hexo+Github一步步搭建属于自己的博客/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>使用Hexo+Github一步步搭建属于自己的博客 | 每天进步一点点</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e7488880ac469947e3bffeefb0f77f54";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">每天进步一点点</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">代码千万行，注释第一行。编程不规范，同事两行泪。</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">0</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">1</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">1</span></a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://vimior.github.io/Hexo/使用Hexo+Github一步步搭建属于自己的博客/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vimor">
+      <meta itemprop="description" content="就算有一天我一无所有，也不缺从头再来的勇气！">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="每天进步一点点">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">使用Hexo+Github一步步搭建属于自己的博客
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-02 00:46:09" itemprop="dateCreated datePublished" datetime="2019-06-02T00:46:09+08:00">2019-06-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-02 01:12:12" itemprop="dateModified" datetime="2019-06-02T01:12:12+08:00">2019-06-02</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/Hexo/使用Hexo+Github一步步搭建属于自己的博客/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/Hexo/使用Hexo+Github一步步搭建属于自己的博客/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.4k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">9 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160; &#160; &#160; &#160;本文将使用Hexo+Github一步步搭建属于自己的博客，效果如下</p>
+<p><img src="../../images/site_preview.png" alt="site_preview"></p>
+<a id="more"></a>
+
+<h2 id="搭建步骤"><a href="#搭建步骤" class="headerlink" title="搭建步骤"></a>搭建步骤</h2><ol>
+<li><h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装<a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">Node.js</a></h3><p>这里不对Node.js的安装做讲解，<a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">Node.js</a>官网下载安装即可（<a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">https://nodejs.org/zh-cn/</a>）</p>
+<p>安装配置好Node.js后可以通过以下命令查看node和npm的版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v <span class="comment"># 由于我电脑的node不是新装的，所以是v8.12.0版本</span></span><br><span class="line">npm -v <span class="comment"># 我这里是6.4.1版本的npm</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><p>这里不对Git的安装做讲解，可以参考<a href="https://git-scm.com/book/zh/v2/起步-安装-Git" target="_blank" rel="noopener">https://git-scm.com/book/zh/v2/起步-安装-Git</a></p>
+<p>安装好后，通过以下命令可以查看git的版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version <span class="comment"># 我这里是git version 2.19.1.windows.1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="创建Github仓库"><a href="#创建Github仓库" class="headerlink" title="创建Github仓库"></a>创建<a href="https://github.com/" target="_blank" rel="noopener">Github</a>仓库</h3><ul>
+<li><p>打开<a href="https://github.com/" target="_blank" rel="noopener">github</a>并登录（<a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a>）</p>
+</li>
+<li><p>新建仓库</p>
+<ul>
+<li><p>选中Repositories栏，然后点击右侧的New按钮创建</p>
+<p><img src="../../images/create_github_repo_1.png" alt="create_github_repo_1"></p>
+</li>
+<li><p>设置仓库名字（</p>
+<ol>
+<li>仓库名必须严格遵守格式：用户名.github.io，不要随意起名，后续会有麻烦，这里vimior是我的用户名）</li>
+<li>记得选中Public和勾选Initialize this repository with a README</li>
+</ol>
+<p><img src="../../images/create_github_repo_2.png" alt="create_github_repo_2"></p>
+</li>
+</ul>
+</li>
+<li><p>查看Github Pages</p>
+<p>选中刚刚创建的仓库的Settings栏，找到Github Pages的设置项</p>
+<p>此时Github Pages会显示如下，表明当前仓库可以作为Github Pages</p>
+<p><img src="../../images/github_pages.png" alt="github_pages"></p>
+</li>
+</ul>
+</li>
+<li><h3 id="安装Hexo环境"><a href="#安装Hexo环境" class="headerlink" title="安装Hexo环境"></a>安装Hexo环境</h3><ul>
+<li><p>安装Hexo</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo -g <span class="comment"># 这里-g参数是为了把hexo安装到全局</span></span><br><span class="line">hexo -v <span class="comment"># 查看hexo是否安装成功，获取其版本信息</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建一个工程目录（这里是vimior_blog），然后进入这个目录</p>
+</li>
+<li><p>初始化Hexo</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="../../images/hexo_init.png" alt="hexo_init"></p>
+</li>
+<li><p>生成静态页面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate <span class="comment"># 可以简写成 hexo g</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动本地服务器，启动后可以通过<a href="http://localhost:4000来访问" target="_blank" rel="noopener">http://localhost:4000来访问</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server <span class="comment"># 可以简写成 hexo s</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建博文</p>
+<p>通过hexo new &lt;文章名&gt;来新建或者直接在工程目录下的source/_post目录下创建一个md文件即可，然后重新生成静态页面并启动服务器即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">"文章名"</span> <span class="comment"># 此命令会在工程目录下的source/_post目录下生成一个&lt;文章名&gt;.md的文件</span></span><br><span class="line">hexo g &amp;&amp; hexo s <span class="comment"># 此命令重新生成静态文件并启动服务器，此时即可通过浏览器访问到我们刚创建的博文了，修改该md文件即可修改博文内容</span></span><br></pre></td></tr></table></figure>
+
+<p>博文格式如下</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 博文的标题</span><br><span class="line">---</span><br><span class="line">博文内容</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><h3 id="配置Hexo"><a href="#配置Hexo" class="headerlink" title="配置Hexo"></a>配置Hexo</h3><ul>
+<li><p>安装hexo-theme-next主题（配置使用在后面统一说明）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装看板娘hexo-helper-live2d</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-helper-live2d --save</span><br><span class="line"><span class="comment"># 下面的命令是安装live2d的模型，这里选择live2d-widget-model-haruto</span></span><br><span class="line"><span class="comment"># 参考https://github.com/xiazeyu/live2d-widget-models选择自己需要的</span></span><br><span class="line"><span class="comment"># 如果选择别的模型，在配置_config.yml文件里的live2d-&gt;model-&gt;use的值也要对应修改</span></span><br><span class="line">npm install live2d-widget-model-haruto --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装字数统计和阅读时间计算工具hexo-symbols-count-time</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-symbols-count-time --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装RSS工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-feed --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装搜索工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装推送的git的工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建categories页</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories <span class="comment"># 会在source目录下生成categories目录</span></span><br><span class="line"><span class="comment"># 修改source/categories/index.md文件如下</span></span><br><span class="line">---</span><br><span class="line">title: categories</span><br><span class="line">date: 2019-06-01 23:34:54</span><br><span class="line"><span class="built_in">type</span>: <span class="string">"categories"</span></span><br><span class="line">comments: <span class="literal">false</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建tags页</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hexo new page tags <span class="comment"># 会在source目录下生成tags目录</span></span><br><span class="line"><span class="comment"># 修改source/categories/index.md文件如下</span></span><br><span class="line">---</span><br><span class="line">title: 标签</span><br><span class="line">date: 2019-06-01 14:21:23</span><br><span class="line"><span class="built_in">type</span>: <span class="string">"tags"</span></span><br><span class="line">comments: <span class="literal">false</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建about页</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hexo new page about <span class="comment"># 会在source目录下生成about目录</span></span><br><span class="line"><span class="comment"># 修改source/categories/index.md文件如下</span></span><br><span class="line">---</span><br><span class="line">title: 我</span><br><span class="line">date: 2019-06-01 23:35:51</span><br><span class="line">comments: <span class="literal">false</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改工程的配置修改_config.yml文件）</p>
+<p>详细配置参考<a href="https://hexo.io/zh-cn/docs/configuration" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/configuration</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以下是在原有配置项修改的</span></span><br><span class="line">title: 每天进步一点点</span><br><span class="line">subtitle: 代码千万行，注释第一行。编程不规范，同事两行泪。</span><br><span class="line">description: 就算有一天我一无所有，也不缺从头再来的勇气！</span><br><span class="line">author: Vimor</span><br><span class="line">language: zh-CN</span><br><span class="line">timezone: Asia/Shanghai</span><br><span class="line">theme: next <span class="comment"># 使用hexo-theme-next主题</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 关联Github Pages，此处修改为自己的github仓库路径</span></span><br><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo: git@github.com:vimior/vimior.github.io.git</span><br><span class="line">  branch: master</span><br><span class="line"></span><br><span class="line"><span class="comment">##################完美的分割线############################</span></span><br><span class="line"><span class="comment"># 以下是新增的</span></span><br><span class="line"><span class="comment"># Live2D：看板娘的配置</span></span><br><span class="line"><span class="comment">## https://github.com/EYHN/hexo-helper-live2d</span></span><br><span class="line">live2d:</span><br><span class="line">  <span class="built_in">enable</span>: <span class="literal">true</span></span><br><span class="line">  scriptFrom: <span class="built_in">local</span> <span class="comment"># 默认</span></span><br><span class="line">  pluginRootPath: live2dw/ <span class="comment"># 插件在站点上的根目录(相对路径)</span></span><br><span class="line">  pluginJsPath: lib/ <span class="comment"># 脚本文件相对与插件根目录路径</span></span><br><span class="line">  pluginModelPath: assets/ <span class="comment"># 模型文件相对与插件根目录路径</span></span><br><span class="line">  <span class="comment"># scriptFrom: jsdelivr # jsdelivr CDN</span></span><br><span class="line">  <span class="comment"># scriptFrom: unpkg # unpkg CDN</span></span><br><span class="line">  <span class="comment"># scriptFrom: https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js # 你的自定义 url</span></span><br><span class="line">  tagMode: <span class="literal">false</span> <span class="comment"># 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中</span></span><br><span class="line">  debug: <span class="literal">false</span> <span class="comment"># 调试, 是否在控制台输出日志</span></span><br><span class="line">  <span class="built_in">log</span>: <span class="literal">false</span></span><br><span class="line">  model:</span><br><span class="line">      use: live2d-widget-model-haruto <span class="comment"># npm-module package name</span></span><br><span class="line">      <span class="comment"># use: hijiki # 博客根目录/live2d_models/ 下的目录名</span></span><br><span class="line">      <span class="comment"># use: ./wives/hijiki # 相对于博客根目录的路径</span></span><br><span class="line">      <span class="comment"># use: https://cdn.jsdelivr.net/npm/live2d-widget-model-hijiki@1.0.5/assets/hijiki.model.json # 你的自定义 url</span></span><br><span class="line">      scale: 1</span><br><span class="line">      hHeadPos: 0.5</span><br><span class="line">      vHeadPos: 0.618</span><br><span class="line">  display:</span><br><span class="line">      superSample: 2</span><br><span class="line">      width: 125</span><br><span class="line">      height: 125</span><br><span class="line">      position: left</span><br><span class="line">      hOffset: 30</span><br><span class="line">      vOffset: 20</span><br><span class="line">  mobile:</span><br><span class="line">      show: <span class="literal">true</span></span><br><span class="line">      scale: 0.05</span><br><span class="line">  react:</span><br><span class="line">      opacityDefault: 1</span><br><span class="line">      opacityOnHover: 0.2</span><br><span class="line"></span><br><span class="line"><span class="comment"># symbols_count_time配置：用于计算字数，阅读时间</span></span><br><span class="line">symbols_count_time:</span><br><span class="line">  symbols: <span class="literal">true</span></span><br><span class="line">  time: <span class="literal">true</span></span><br><span class="line">  total_symbols: <span class="literal">true</span></span><br><span class="line">  total_time: <span class="literal">true</span></span><br><span class="line">  exclude_codeblock: <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">creative_commons: by-nc-sa</span><br><span class="line"></span><br><span class="line"><span class="comment"># 订阅配置</span></span><br><span class="line">feed:</span><br><span class="line">  <span class="built_in">type</span>: atom</span><br><span class="line">  path: atom.xml</span><br><span class="line">  <span class="built_in">limit</span>: 20</span><br><span class="line">  hub:</span><br><span class="line">  content:</span><br><span class="line">  content_limit: 140</span><br><span class="line">  content_limit_delim: <span class="string">' '</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索配置</span></span><br><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  <span class="built_in">limit</span>: 10000</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改hexo-theme-next主题的配置（修改themes/next/_config.yml文件）</p>
+<p>详细配置参考<a href="http://theme-next.iissnan.com/theme-settings.html" target="_blank" rel="noopener">http://theme-next.iissnan.com/theme-settings.html</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">rss: /atom.xml</span><br><span class="line">footer:</span><br><span class="line">  since: 2019</span><br><span class="line">  icon:</span><br><span class="line">  	name: heart</span><br><span class="line">  	animated: <span class="literal">true</span></span><br><span class="line">  	color: <span class="string">"#D0104C"</span></span><br><span class="line">menu:</span><br><span class="line">  home: / || home</span><br><span class="line">  about: /about/ || user</span><br><span class="line">  tags: /tags/ || tags</span><br><span class="line">  categories: /categories/ || th</span><br><span class="line">  archives: /archives/ || archive</span><br><span class="line">menu_settings:</span><br><span class="line">  icons: <span class="literal">true</span></span><br><span class="line">  badges: <span class="literal">true</span></span><br><span class="line">scheme: Gemini</span><br><span class="line">avatar:</span><br><span class="line">  url: /images/avatar.png <span class="comment"># 注意：需要把avatar.png放在themes/next/source/images里面</span></span><br><span class="line">  rounded: <span class="literal">true</span></span><br><span class="line">back2top:</span><br><span class="line">  <span class="built_in">enable</span>: <span class="literal">true</span></span><br><span class="line">  sidebar: <span class="literal">true</span></span><br><span class="line">  scrollpercent: <span class="literal">true</span></span><br><span class="line">post_meta：</span><br><span class="line">  updated_at：</span><br><span class="line">    another_day: <span class="literal">false</span></span><br><span class="line">symbols_count_time:</span><br><span class="line">  separated_meta: <span class="literal">true</span></span><br><span class="line">  item_text_post: <span class="literal">true</span></span><br><span class="line">  item_text_total: <span class="literal">false</span></span><br><span class="line">  awl: 4</span><br><span class="line">  wpm: 275</span><br><span class="line">android_chrome_color: <span class="string">"#fff"</span></span><br><span class="line">highlight_theme: night eighties</span><br><span class="line">busuanzi_count:</span><br><span class="line">  <span class="built_in">enable</span>: <span class="literal">true</span></span><br><span class="line">local_search:</span><br><span class="line">  <span class="built_in">enable</span>: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><h3 id="推送到Github-Pages"><a href="#推送到Github-Pages" class="headerlink" title="推送到Github Pages"></a>推送到Github Pages</h3><p>注意：</p>
+<ol>
+<li><p>推送前先本地运行，通过浏览器访问没问题再行推送</p>
+</li>
+<li><p>初次使用git需要设置user name和email</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">"your name"</span></span><br><span class="line">git config --global user.email <span class="string">"your email"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>（如果未曾添加过ssh-agent）需要添加ssh-key到github的ssh-agent</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 生成ssh密钥</span></span><br><span class="line">ssh-keygen -t rsa -C <span class="string">"your email"</span> <span class="comment"># 生成路径在%USERPROFILE%/.ssh目录</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 把%USERPROFILE%/.ssh/id_rsa的内容拷贝</span></span><br><span class="line"><span class="comment"># 3. 粘贴到github</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="../../images/add_ssh_key_1.png" alt="add_ssh_key_1"></p>
+</li>
+</ol>
+</li>
+</ol>
+<p>   ​    <img src="../../images/add_ssh_key_2.png" alt="add_ssh_key_2"></p>
+<p>   ​    </p>
+<p>   ​    <img src="../../images/add_ssh_key_3.png" alt="add_ssh_key_3"></p>
+<ul>
+<li><p>生成静态文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>推送到github pages</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy <span class="comment"># 可以简写为 hexo d</span></span><br><span class="line"><span class="comment"># hexo deploy -g  等于hexo g &amp;&amp; hexo d</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vimor</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://vimior.github.io/Hexo/使用Hexo+Github一步步搭建属于自己的博客/" title="使用Hexo+Github一步步搭建属于自己的博客">https://vimior.github.io/Hexo/使用Hexo+Github一步步搭建属于自己的博客/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Vimor">
+            
+              <p class="site-author-name" itemprop="name">Vimor</p>
+              <div class="site-description motion-element" itemprop="description">就算有一天我一无所有，也不缺从头再来的勇气！</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/vimior" title="GitHub &rarr; https://github.com/vimior" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:vinman.cub@gmail.com" title="E-Mail &rarr; mailto:vinman.cub@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建步骤"><span class="nav-number">1.</span> <span class="nav-text">搭建步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Node-js"><span class="nav-number">1.1.</span> <span class="nav-text">安装Node.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Git"><span class="nav-number">1.2.</span> <span class="nav-text">安装Git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Github仓库"><span class="nav-number">1.3.</span> <span class="nav-text">创建Github仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Hexo环境"><span class="nav-number">1.4.</span> <span class="nav-text">安装Hexo环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Hexo"><span class="nav-number">1.5.</span> <span class="nav-text">配置Hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送到Github-Pages"><span class="nav-number">1.6.</span> <span class="nav-text">推送到Github Pages</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vimor</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">5k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">9 分钟</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'lSkymBzE4THeWicTjJi1PBph-gzGzoHsz',
+    appKey: 'nyMUxb59Kpd6hC02OiEdpHQ3',
+    placeholder: '手下留情',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"log":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"left","hOffset":30,"vOffset":20},"mobile":{"show":true,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2}});</script></body>
+</html>
+<!-- 鼠标轨迹及点击动画 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<script type="text/javascript" src="/js/fairyDustCursor.js"></script>
