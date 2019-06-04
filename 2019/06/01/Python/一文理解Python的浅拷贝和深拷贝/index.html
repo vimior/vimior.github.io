@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#fff">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: true,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;#160; &amp;#160; &amp;#160; &amp;#160;Python作为一门高级语言，与C/C++还是有很大的不同。关于赋值、切片、浅拷贝和深拷贝这一块，其实很多人对其不是很了解的，这就很容易在某些代码中出现意想不到的结果，同时也会很难找到原因。本文将讲述这几类情况的区别以及使用，尽可能通俗易懂，不会涉及到底层的实现原理。  &amp;#160; &amp;#160; 本文所有代码的执行环境如下：  操作系统：Wi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文理解Python的赋值以及浅拷贝和深拷贝">
+<meta property="og:url" content="https://vimior.github.io/2019/06/01/Python/一文理解Python的浅拷贝和深拷贝/index.html">
+<meta property="og:site_name" content="落">
+<meta property="og:description" content="&amp;#160; &amp;#160; &amp;#160; &amp;#160;Python作为一门高级语言，与C/C++还是有很大的不同。关于赋值、切片、浅拷贝和深拷贝这一块，其实很多人对其不是很了解的，这就很容易在某些代码中出现意想不到的结果，同时也会很难找到原因。本文将讲述这几类情况的区别以及使用，尽可能通俗易懂，不会涉及到底层的实现原理。  &amp;#160; &amp;#160; 本文所有代码的执行环境如下：  操作系统：Wi">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-04T16:56:13.735Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一文理解Python的赋值以及浅拷贝和深拷贝">
+<meta name="twitter:description" content="&amp;#160; &amp;#160; &amp;#160; &amp;#160;Python作为一门高级语言，与C/C++还是有很大的不同。关于赋值、切片、浅拷贝和深拷贝这一块，其实很多人对其不是很了解的，这就很容易在某些代码中出现意想不到的结果，同时也会很难找到原因。本文将讲述这几类情况的区别以及使用，尽可能通俗易懂，不会涉及到底层的实现原理。  &amp;#160; &amp;#160; 本文所有代码的执行环境如下：  操作系统：Wi">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="落" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://vimior.github.io/2019/06/01/Python/一文理解Python的浅拷贝和深拷贝/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>一文理解Python的赋值以及浅拷贝和深拷贝 | 落</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e7488880ac469947e3bffeefb0f77f54";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">落</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">你若安好，便是晴天！</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">0</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">2</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">2</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://vimior.github.io/2019/06/01/Python/一文理解Python的浅拷贝和深拷贝/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vimor">
+      <meta itemprop="description" content="代码千万行，注释第一行。</br>编程不规范，同事两行泪。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">一文理解Python的赋值以及浅拷贝和深拷贝
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-01 22:22:22" itemprop="dateCreated datePublished" datetime="2019-06-01T22:22:22+08:00">2019-06-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-05 00:56:13" itemprop="dateModified" datetime="2019-06-05T00:56:13+08:00">2019-06-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/06/01/Python/一文理解Python的浅拷贝和深拷贝/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/06/01/Python/一文理解Python的浅拷贝和深拷贝/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.1k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">8 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#160; &#160; &#160; &#160;Python作为一门高级语言，与C/C++还是有很大的不同。关于<strong>赋值</strong>、<strong>切片</strong>、<strong>浅拷贝</strong>和<strong>深拷贝</strong>这一块，其实很多人对其不是很了解的，这就很容易在某些代码中出现意想不到的结果，同时也会很难找到原因。本文将讲述这几类情况的区别以及使用，尽可能通俗易懂，不会涉及到底层的实现原理。</p>
+<p> &#160; &#160; 本文所有代码的执行环境如下：</p>
+<ul>
+<li><p>操作系统：Window10</p>
+</li>
+<li><p>Python版本：Python 3.7.0</p>
+</li>
+<li><p>执行方式：CMD窗口+Python解释器的命令交互模式</p>
+</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="赋值、切片、拷贝"><a href="#赋值、切片、拷贝" class="headerlink" title="赋值、切片、拷贝"></a>赋值、切片、拷贝</h3><p> &#160; &#160; &#160;本文使用<code>is</code>运算符来判断对象间的唯一身份标识，也就是id是否相同，<strong><code>is</code>也叫同一性运算符</strong></p>
+<ul>
+<li><h4 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h4><p>赋值就是我们通过<code>=</code>把一个变量的值赋给另一变量，相当于引用，这里的赋值又可以分为几类</p>
+<ul>
+<li><h5 id="不可变对象的赋值（在缓存范围内）"><a href="#不可变对象的赋值（在缓存范围内）" class="headerlink" title="不可变对象的赋值（在缓存范围内）"></a>不可变对象的赋值（在缓存范围内）</h5><p>为了增加程序的运行效率，Python3的解析器中实现了整型数字和字符串缓存的机制，</p>
+<ul>
+<li>整型数字的缓存范围为<strong>[-5, 256]</strong>，即变量值相等且在[-5, 20]范围内的所有变量都是同一个对象（这个是有争议的，有文章说是[-5, 无穷大]，但我实测是[-5, 256]）</li>
+<li>字符串默认缓存长度<strong>4096</strong>，即变量值相等且长度在4096以内的所有字符串变量是同一个对象，（这个是有争议的，很多文章说是缓存20位，但我实测是长度4096）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 字符串赋值</span></span><br><span class="line">str_a = str_b = <span class="string">'hello'</span> <span class="comment"># 相当于 str_a = 'hello' 和 str_b = str_a 这两条语句</span></span><br><span class="line">str_c = <span class="string">'hello'</span></span><br><span class="line">print(str_b <span class="keyword">is</span> str_a) <span class="comment"># 输出: True</span></span><br><span class="line">print(str_c <span class="keyword">is</span> str_a) <span class="comment"># 输出：True，这里输出True就是因为缓存机制，str_c和str_a的值相等，都是'hello'，且长度在20以内</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 整型赋值</span></span><br><span class="line">int_a = int_b = <span class="number">100</span> <span class="comment"># 相当于 int_a = 100 和 int_b = int_a 这两条语句</span></span><br><span class="line">int_c = <span class="number">10</span> * <span class="number">10</span></span><br><span class="line">print(int_b <span class="keyword">is</span> int_a) <span class="comment"># 输出True</span></span><br><span class="line">print(int_c <span class="keyword">is</span> int_a) <span class="comment"># 输出True，这里输出True就是缓存机制，因为int_c和int_a的值相等，都为100，且在[-5, 256]范围内</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h5 id="不可变对象的赋值（不在缓存范围内）"><a href="#不可变对象的赋值（不在缓存范围内）" class="headerlink" title="不可变对象的赋值（不在缓存范围内）"></a>不可变对象的赋值（不在缓存范围内）</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 字符串赋值</span></span><br><span class="line">str_a = str_b = <span class="string">'a'</span> * <span class="number">4097</span> <span class="comment"># 相当于 str_a = 'a' * 4097 和 str_b = str_a 这两条语句</span></span><br><span class="line">str_c = <span class="string">'a'</span> * <span class="number">4097</span></span><br><span class="line">print(str_b <span class="keyword">is</span> str_a) <span class="comment"># 输出: True</span></span><br><span class="line">print(str_c <span class="keyword">is</span> str_a) <span class="comment"># 输出：False，这里输出False是因为虽然str_c和str_a的值相等，但长度在为4097，超过了缓存最大长度4096</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 整型赋值</span></span><br><span class="line">int_a = int_b = <span class="number">1000</span> <span class="comment"># 相当于 int_a = 100 和 int_b = int_a 这两条语句</span></span><br><span class="line">int_c = <span class="number">10</span> * <span class="number">10</span> * <span class="number">10</span></span><br><span class="line">print(int_b <span class="keyword">is</span> int_a) <span class="comment"># 输出True</span></span><br><span class="line">print(int_c <span class="keyword">is</span> int_a) <span class="comment"># 输出False，这里输出False是因为虽然int_c和int_a的值相等，都为1000，但超出了缓存]范围[-5, 256]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h5 id="可变对象的赋值"><a href="#可变对象的赋值" class="headerlink" title="可变对象的赋值"></a>可变对象的赋值</h5><p>这种情况相当于完全引用，<strong>“比浅拷贝还要浅拷贝”</strong>，这里举个例，假定list_a为列表，把list_a赋值给list_b，<strong>只要不是重新赋值list_a或list_b（list_a=xxx或list_b=yyy）操作</strong>，无论是通过list_a还是通过list_b来操作列表（增、删、改…），另一个对象也会随之改变（<strong>即list_a和list_b在没有重新执行赋值操作时，将一直是同一个对象</strong>）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">list_a = list_b = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] <span class="comment"># 相当于 list_a = [1, 2, 3] 和 list_b = list_a 这两条语句</span></span><br><span class="line">list_c = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">print(list_b <span class="keyword">is</span> list_a) <span class="comment"># 输出True，修改list_a会影响list_b，反之亦然</span></span><br><span class="line">print(list_c <span class="keyword">is</span> list_a) <span class="comment"># 输出False，所以修改list_a不会影响到list_c，反之亦然</span></span><br><span class="line"><span class="comment"># 说明，这里所说的“比浅拷贝还浅拷贝”是针对浅拷贝而说的，也可以说完全没拷贝，只是引用</span></span><br><span class="line"><span class="comment"># 浅拷贝中对本身的修改不会影响另一个（对可变子元素本身的操作才会影响），而赋值无论哪种情况的修改都会影响另一个，（这里的赋值和浅拷贝是针对可变对象来说的）</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><h4 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h4><p>切片就是从某个对象中抽取部分的操作，<strong>切片操作得到的对象和原对象是不同的对象，但其子元素有可能是同一对象</strong>，这里分为几种情况说明，<strong>切片相当于浅拷贝</strong></p>
+<ul>
+<li><h5 id="对是不可变对象的子元素的修改或增删操作不会影响另一对象"><a href="#对是不可变对象的子元素的修改或增删操作不会影响另一对象" class="headerlink" title="对是不可变对象的子元素的修改或增删操作不会影响另一对象"></a>对是不可变对象的子元素的修改或增删操作不会影响另一对象</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">list_a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">list_b = list_a[:] <span class="comment"># 完全切片</span></span><br><span class="line">print(list_b <span class="keyword">is</span> list_a) <span class="comment"># 输出False，list_a和list_b是不同的对象</span></span><br><span class="line">list_a.append(<span class="number">5</span>) <span class="comment"># 对对象list_a进行追加元素操作</span></span><br><span class="line"><span class="comment"># list_a[0] = 11 # 对对象list_a进行修改子元素操作</span></span><br><span class="line"><span class="comment"># del list_a[-1] # 对对象list_a进行删除子元素操作</span></span><br><span class="line">print(list_a) <span class="comment"># 输出[1, 2, 3, 4, 5]</span></span><br><span class="line">print(list_b) <span class="comment"># 输出[1, 2, 3, 4]</span></span><br><span class="line">print(list_a <span class="keyword">is</span> list_b) <span class="comment"># 输出False，不是同一个对象</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h5 id="对是可变对象的子元素的操作会影响另一对象"><a href="#对是可变对象的子元素的操作会影响另一对象" class="headerlink" title="对是可变对象的子元素的操作会影响另一对象"></a>对是可变对象的子元素的操作会影响另一对象</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">list_a = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>], <span class="number">4</span>] <span class="comment"># 和上面不同在于list_a[2]是一个可变对象</span></span><br><span class="line">list_b = list_a[:] <span class="comment"># 完全切片</span></span><br><span class="line">print(list_b <span class="keyword">is</span> list_a) <span class="comment"># 输出False，list_a和list_b是不同的对象</span></span><br><span class="line">list_a[<span class="number">2</span>].append(<span class="number">44</span>) <span class="comment"># 对可变子元素进行追加子元素操作，注意是对子元素本身进行追加操作</span></span><br><span class="line"><span class="comment"># list_a[2][0] = 33 # 对可变子元素进行修改子元素操作，注意是对子元素本身的子元素进行修改操作，而不是修改list_a的子元素</span></span><br><span class="line"><span class="comment"># del list_a[2][-1] # 对可变子元素进行删除子元素操作，注意是对子元素本身的子元素进行删除操作，而不是删除list_a的子元素</span></span><br><span class="line">print(list_) <span class="comment"># 输出[1, 2, [3, 44], 4]</span></span><br><span class="line">print(list_b) <span class="comment"># 输出[1, 2, [3, 44], 4]</span></span><br><span class="line">print(list_b <span class="keyword">is</span> list_a) <span class="comment"># 输出False，list_a和list_b是不同的对象</span></span><br><span class="line">print(list_a[<span class="number">2</span>] <span class="keyword">is</span> list_b[<span class="number">2</span>]) <span class="comment"># 输出True，在切片操作中，可变子元素是相当于赋值操作的，即list_a[2]和list_b[2]是同一个对象</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 说明：这种情况是不区分完全切片和不完全切片的，只要切片得到的子元素是可变对象的，都满足这种情况,以下代码就是不完全切片的例子，和完全切片的情况一样的</span></span><br><span class="line">list_c = list_a[:<span class="number">3</span>] <span class="comment"># 不完全切片，但切片得到的list_c[2]是一个可变对象</span></span><br><span class="line">print(list_c <span class="keyword">is</span> list_a) <span class="comment"># 输出False，list_a和list_c是不同的对象</span></span><br><span class="line">list_a[<span class="number">2</span>][<span class="number">0</span>] = <span class="number">33</span> <span class="comment"># 修改可变子元素的子元素，注意是修改子元素本身的子元素，而不是修改list_a的子元素</span></span><br><span class="line">print(list_a) <span class="comment"># 输出[1, 2, [33, 44], 4]</span></span><br><span class="line">print(list_c) <span class="comment"># 输出[1, 2, [33, 44], 4]</span></span><br><span class="line">print(list_c <span class="keyword">is</span> list_a) <span class="comment"># 输出False，list_a和list_c是不同的对象</span></span><br><span class="line">print(list_a[<span class="number">2</span>] <span class="keyword">is</span> list_c[<span class="number">2</span>]) <span class="comment"># 输出True，在切片操作中，可变子元素是相当于赋值操作的，即list_a[2]和list_c[2]是同一个对象</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><h4 id="拷贝"><a href="#拷贝" class="headerlink" title="拷贝"></a>拷贝</h4><p>相对于上面的赋值和切片，这里所说的拷贝的是通过copy模块进行拷贝操作</p>
+<ul>
+<li><h5 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h5><p>浅拷贝使用<strong>copy.copy(<em>source</em>)</strong>方法实现（某些对象本身会提供copy方法，如list.copy），<strong>拷贝出来的对象和原对象有可能是同一对象</strong>，如果拷贝的对象是可变对象，<strong>其子元素有可能是同一对象</strong></p>
+<ol>
+<li><p><strong>对不可变对象进行浅拷贝，相当于深拷贝，类似于赋值操作</strong>，请参考上面的赋值说明，<strong>与赋值不同的是，这里拷贝得到的的对象和原对象是同一对象</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">a = <span class="string">'hello'</span></span><br><span class="line">b = copy.copy(a)</span><br><span class="line">print(b <span class="keyword">is</span> a) <span class="comment"># 输出True，和赋值一样</span></span><br><span class="line"></span><br><span class="line">c = <span class="string">'a'</span> * <span class="number">4097</span></span><br><span class="line">d = copy.copy(c)</span><br><span class="line">print(d <span class="keyword">is</span> c) <span class="comment"># 输出True，和赋值不一样，已经超过缓存范围，但还是一样，这种情况可以类比于不设缓存范围（肯定缓存）的赋值操作</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>对可变对象进行浅拷贝，相当于完全切片，得到的对象和原对象是不同的对象，但其子元素有可能是同一对象</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">a = [<span class="number">1</span>, [<span class="number">2</span>, [<span class="number">3</span>, [<span class="number">4</span>]]]]</span><br><span class="line">b = copy.copy(a)</span><br><span class="line">print(b <span class="keyword">is</span> a) <span class="comment"># 输出False，浅拷贝可变对象得到的对象和原对象是不同的对象</span></span><br><span class="line">print(b[<span class="number">0</span>] <span class="keyword">is</span> a[<span class="number">0</span>]) <span class="comment"># True，浅拷贝可变对象得到的对象的不可变子元素是同一对象，这和深拷贝是一样的</span></span><br><span class="line">print(b[<span class="number">1</span>] <span class="keyword">is</span> a[<span class="number">1</span>]) <span class="comment"># True，浅拷贝可变对象得到的对象的可变子元素也是同一对象，这和深拷贝是不一样的</span></span><br><span class="line"><span class="comment"># 下面两个和上面两个是一样的情况，一一对应，只不过层级更深而已</span></span><br><span class="line">print(b[<span class="number">1</span>][<span class="number">0</span>] <span class="keyword">is</span> a[<span class="number">1</span>][<span class="number">0</span>]) <span class="comment"># True</span></span><br><span class="line">print(b[<span class="number">1</span>][<span class="number">1</span>] <span class="keyword">is</span> a[<span class="number">1</span>][<span class="number">1</span>]) <span class="comment"># True</span></span><br><span class="line"></span><br><span class="line">b[<span class="number">0</span>] = <span class="number">111</span> <span class="comment"># 对b[0]直接修改</span></span><br><span class="line">b.append(<span class="number">3434</span>) <span class="comment"># 对b进行追加操作</span></span><br><span class="line">print(a, b) <span class="comment"># 这里a和b不一样了</span></span><br><span class="line"></span><br><span class="line">b[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">22</span> <span class="comment"># 对子元素b[1][0]直接修改</span></span><br><span class="line">b[<span class="number">1</span>].append(<span class="number">5</span>) <span class="comment"># 对子元素b[1]进行追加操作</span></span><br><span class="line">print(b[<span class="number">1</span>], a[<span class="number">1</span>]) <span class="comment"># 这里的b[1]和a[1]还是保持一样的</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><h5 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h5><p>深拷贝使用<strong>copy.deepcopy(<em>source</em>)</strong>方法实现，<strong>拷贝出来的对象和原对象有可能是同一对象</strong>，如果拷贝的对象是可变对象，<strong>其子元素也有可能是同一对象</strong>，但总的来说，这两个对象完全没关系（无论是本身还是其子对象都完全没有关联），<strong>操作一个不会影响到另一个</strong></p>
+<ol>
+<li><p><strong>不可变对象的深拷贝</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">a = <span class="string">'a'</span> * <span class="number">10000</span></span><br><span class="line">b = copy.deepcopy(a)</span><br><span class="line">print(b <span class="keyword">is</span> a) <span class="comment"># 输出True，深拷贝不可变对象得到的对象和原对象是同一对象</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>可变对象的深拷贝</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">c = [<span class="number">1</span>, [<span class="number">2</span>, [<span class="number">3</span>, [<span class="number">4</span>]]]]</span><br><span class="line">d = copy.deepcopy(c)</span><br><span class="line">print(d <span class="keyword">is</span> c) <span class="comment"># 输出False，深拷贝可变对象得到的对象和原对象是不同的对象</span></span><br><span class="line">print(d[<span class="number">0</span>] <span class="keyword">is</span> c[<span class="number">0</span>]) <span class="comment"># 输出True，深拷贝可变对象得到的对象的不可变子元素是同一对象</span></span><br><span class="line">print(d[<span class="number">1</span>] <span class="keyword">is</span> c[<span class="number">1</span>]) <span class="comment"># 输出False，深拷贝可变对象得到的对象的可变子元素是不同的对象</span></span><br><span class="line"><span class="comment"># 下面两个和上面两个是一样的情况，一一对应，只不过层级更深而已</span></span><br><span class="line">print(d[<span class="number">1</span>][<span class="number">0</span>] <span class="keyword">is</span> c[<span class="number">1</span>][<span class="number">0</span>]) <span class="comment"># 输出True</span></span><br><span class="line">print(d[<span class="number">1</span>][<span class="number">1</span>] <span class="keyword">is</span> c[<span class="number">1</span>][<span class="number">1</span>]) <span class="comment"># 输出False</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><h5 id="赋值不可变对象要看是否有缓存机制来决定是否是同一对象"><a href="#赋值不可变对象要看是否有缓存机制来决定是否是同一对象" class="headerlink" title="赋值不可变对象要看是否有缓存机制来决定是否是同一对象"></a>赋值不可变对象要看是否有缓存机制来决定是否是同一对象</h5></li>
+<li><h5 id="赋值可变对象相当于引用，完全不拷贝"><a href="#赋值可变对象相当于引用，完全不拷贝" class="headerlink" title="赋值可变对象相当于引用，完全不拷贝"></a>赋值可变对象相当于引用，完全不拷贝</h5></li>
+<li><h5 id="切片相当于浅拷贝"><a href="#切片相当于浅拷贝" class="headerlink" title="切片相当于浅拷贝"></a>切片相当于浅拷贝</h5></li>
+<li><h5 id="对不可变对象进行浅拷贝，相当于深拷贝"><a href="#对不可变对象进行浅拷贝，相当于深拷贝" class="headerlink" title="对不可变对象进行浅拷贝，相当于深拷贝"></a>对不可变对象进行浅拷贝，相当于深拷贝</h5></li>
+<li><h5 id="对可变对象进行浅拷贝，直接修改一个不会不会影响另一个，但对其可变子元素的修改会影响另一个"><a href="#对可变对象进行浅拷贝，直接修改一个不会不会影响另一个，但对其可变子元素的修改会影响另一个" class="headerlink" title="对可变对象进行浅拷贝，直接修改一个不会不会影响另一个，但对其可变子元素的修改会影响另一个"></a>对可变对象进行浅拷贝，直接修改一个不会不会影响另一个，但对其可变子元素的修改会影响另一个</h5></li>
+<li><h5 id="深拷贝得到的对象和原对象互不相干，修改一个不会影响另一个，这里指任何修改"><a href="#深拷贝得到的对象和原对象互不相干，修改一个不会影响另一个，这里指任何修改" class="headerlink" title="深拷贝得到的对象和原对象互不相干，修改一个不会影响另一个，这里指任何修改"></a>深拷贝得到的对象和原对象互不相干，修改一个不会影响另一个，这里指任何修改</h5></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vimor</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://vimior.github.io/2019/06/01/Python/一文理解Python的浅拷贝和深拷贝/" title="一文理解Python的赋值以及浅拷贝和深拷贝">https://vimior.github.io/2019/06/01/Python/一文理解Python的浅拷贝和深拷贝/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/01/Hexo/使用Hexo+Github一步步搭建属于自己的博客/" rel="prev" title="使用Hexo+Github一步步搭建属于自己的博客">
+                使用Hexo+Github一步步搭建属于自己的博客 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Vimor">
+            
+              <p class="site-author-name" itemprop="name">Vimor</p>
+              <div class="site-description motion-element" itemprop="description">代码千万行，注释第一行。<br>编程不规范，同事两行泪。</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/vimior" title="GitHub &rarr; https://github.com/vimior" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:vinman.cub@gmail.com" title="E-Mail &rarr; mailto:vinman.cub@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#赋值、切片、拷贝"><span class="nav-number">1.</span> <span class="nav-text">赋值、切片、拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#赋值"><span class="nav-number">1.1.</span> <span class="nav-text">赋值</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#不可变对象的赋值（在缓存范围内）"><span class="nav-number">1.1.1.</span> <span class="nav-text">不可变对象的赋值（在缓存范围内）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#不可变对象的赋值（不在缓存范围内）"><span class="nav-number">1.1.2.</span> <span class="nav-text">不可变对象的赋值（不在缓存范围内）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#可变对象的赋值"><span class="nav-number">1.1.3.</span> <span class="nav-text">可变对象的赋值</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#切片"><span class="nav-number">1.2.</span> <span class="nav-text">切片</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#对是不可变对象的子元素的修改或增删操作不会影响另一对象"><span class="nav-number">1.2.1.</span> <span class="nav-text">对是不可变对象的子元素的修改或增删操作不会影响另一对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对是可变对象的子元素的操作会影响另一对象"><span class="nav-number">1.2.2.</span> <span class="nav-text">对是可变对象的子元素的操作会影响另一对象</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拷贝"><span class="nav-number">1.3.</span> <span class="nav-text">拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#浅拷贝"><span class="nav-number">1.3.1.</span> <span class="nav-text">浅拷贝</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#深拷贝"><span class="nav-number">1.3.2.</span> <span class="nav-text">深拷贝</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#赋值不可变对象要看是否有缓存机制来决定是否是同一对象"><span class="nav-number">2.0.1.</span> <span class="nav-text">赋值不可变对象要看是否有缓存机制来决定是否是同一对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#赋值可变对象相当于引用，完全不拷贝"><span class="nav-number">2.0.2.</span> <span class="nav-text">赋值可变对象相当于引用，完全不拷贝</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#切片相当于浅拷贝"><span class="nav-number">2.0.3.</span> <span class="nav-text">切片相当于浅拷贝</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对不可变对象进行浅拷贝，相当于深拷贝"><span class="nav-number">2.0.4.</span> <span class="nav-text">对不可变对象进行浅拷贝，相当于深拷贝</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对可变对象进行浅拷贝，直接修改一个不会不会影响另一个，但对其可变子元素的修改会影响另一个"><span class="nav-number">2.0.5.</span> <span class="nav-text">对可变对象进行浅拷贝，直接修改一个不会不会影响另一个，但对其可变子元素的修改会影响另一个</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#深拷贝得到的对象和原对象互不相干，修改一个不会影响另一个，这里指任何修改"><span class="nav-number">2.0.6.</span> <span class="nav-text">深拷贝得到的对象和原对象互不相干，修改一个不会影响另一个，这里指任何修改</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vimor</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">14k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">23 分钟</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.2"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'lSkymBzE4THeWicTjJi1PBph-gzGzoHsz',
+    appKey: 'nyMUxb59Kpd6hC02OiEdpHQ3',
+    placeholder: '手下留情',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"log":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"superSample":2,"width":125,"height":125,"position":"left","hOffset":30,"vOffset":20},"mobile":{"show":true,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2}});</script></body>
+</html>
+<!-- 鼠标轨迹及点击动画 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<script type="text/javascript" src="/js/fairyDustCursor.js"></script>
