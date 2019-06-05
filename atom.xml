@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://vimior.github.io/"/>
-  <updated>2019-06-04T16:58:35.232Z</updated>
+  <updated>2019-06-05T14:17:48.612Z</updated>
   <id>https://vimior.github.io/</id>
   
   <author>
@@ -21,12 +21,12 @@
     <link href="https://vimior.github.io/2019/06/04/Python/%E4%B8%80%E6%96%87%E7%90%86%E8%A7%A3Python%E7%9A%84%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/"/>
     <id>https://vimior.github.io/2019/06/04/Python/一文理解Python的浅拷贝和深拷贝/</id>
     <published>2019-06-04T14:22:22.000Z</published>
-    <updated>2019-06-04T16:58:35.232Z</updated>
+    <updated>2019-06-05T14:17:48.612Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&amp;#160; &amp;#160; &amp;#160; &amp;#160;Python作为一门高级语言，与C/C++还是有很大的不同。关于&lt;strong&gt;赋值&lt;/strong&gt;、&lt;strong&gt;切片&lt;/strong&gt;、&lt;strong&gt;浅拷贝&lt;/strong&gt;和&lt;strong&gt;深拷贝&lt;/strong&gt;这一块，其实很多人对其不是很了解的，这就很容易在某些代码中出现意想不到的结果，同时也会很难找到原因。本文将讲述这几类情况的区别以及使用，尽可能通俗易懂，不会涉及到底层的实现原理。&lt;/p&gt;
-&lt;p&gt; &amp;#160; &amp;#160; 本文所有代码的执行环境如下：&lt;/p&gt;
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;Python作为一门高级语言，与C/C++还是有很大的不同。关于&lt;strong&gt;赋值&lt;/strong&gt;、&lt;strong&gt;切片&lt;/strong&gt;、&lt;strong&gt;浅拷贝&lt;/strong&gt;和&lt;strong&gt;深拷贝&lt;/strong&gt;这一块，其实很多人对其不是很了解的，这就很容易在某些代码中出现意想不到的结果，同时也会很难找到原因。本文将讲述这几类情况的区别以及使用，尽可能通俗易懂，不会涉及到底层的实现原理。&lt;/p&gt;
+&lt;p&gt;本文所有代码的执行环境如下：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;操作系统：Window10&lt;/p&gt;
 &lt;/li&gt;
